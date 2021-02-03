@@ -19,6 +19,9 @@ Screen UI should display one of the following states:
 - Error
 - Content (just showing movies)
 
+### Optional Requirements
+- Implement sign-in with Facebook and show user avatar
+
 ### Technical requirements
 - Kotlin is required
 - Sqlite / Room is required
@@ -26,6 +29,7 @@ Screen UI should display one of the following states:
 - Clean Architecture patterns are mandatory;
 - Dependency injection is required;
 - Unit-tests are mandatory;
+
 
 ### Notes
 - Your code should be testable, scalable and flexible
@@ -35,10 +39,17 @@ Screen UI should display one of the following states:
 - Some fancy animations will be a plus, but don't spend a lot of time for that
 - Make sure that anyone can build your project.
 
+### Design example
+Here is an example how application might look like, but the final decision is up to you.
+
+![Design Example](image.png)
+
 ### Resources
 The movies database API: https://www.themoviedb.org/documentation/api/discover 
 
 Please, obtain your own API key.
+
+Design example: https://www.figma.com/file/vpBc5bvJj6gmVBIqdrzn0V/boosters-test-task?node-id=0%3A1
 
 ## P.S.
 Feel free to ask any question to your contacting HR
