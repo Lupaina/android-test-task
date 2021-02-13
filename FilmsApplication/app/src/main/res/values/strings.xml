@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Films Application</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="films_title">FILMS</string>
+    <string name="favourites_title">FAVOURITES</string>
+    <string name="continue_without_login">Continue without login</string>
+    <string name="continue_with_facebook">Continue with Facebook</string>
+    <string name="like_button">Like</string>
+    <string name="share_button">Share</string>
+    <string name="error_network_error">Network Error. Request failed</string>
+
+</resources>
