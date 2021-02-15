@@ -1,10 +1,10 @@
 package com.example.filmsapplication.di
 
 import android.util.Log
-import com.example.filmsapplication.menagers.AuthorizationManager
+import com.example.filmsapplication.data.retrofit.ApiService
+import com.example.filmsapplication.data.retrofit.interceptors.AuthorizationInterceptor
+import com.example.filmsapplication.data.room.FilmsDao
 import com.example.filmsapplication.repository.FilmRepository
-import com.example.filmsapplication.retrofit.ApiService
-import com.example.filmsapplication.retrofit.interceptors.AuthorizationInterceptor
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import dagger.Module
@@ -54,9 +54,7 @@ class RetrofitModule {
 
     @Singleton
     @Provides
-    fun provideFilmRepository(
-        apiService: ApiService
-    ): FilmRepository {
-        return FilmRepository(apiService)
+    fun provideFilmRepository(apiService: ApiService, filmsDao: FilmsDao): FilmRepository {
+        return FilmRepository(apiService, filmsDao)
     }
 }

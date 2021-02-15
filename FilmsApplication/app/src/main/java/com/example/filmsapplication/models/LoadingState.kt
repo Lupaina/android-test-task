@@ -8,4 +8,6 @@ sealed class LoadingState {
     object LoadingFinish : LoadingState()
     object Refresh : LoadingState()
     object Error : LoadingState()
+    object CacheData : LoadingState()
+    object NoData : LoadingState()
 }

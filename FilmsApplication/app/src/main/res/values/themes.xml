@@ -27,4 +27,16 @@
         <item name="android:textColor">@color/white</item>
     </style>
 
+    <style name="ShapeableImage"/>
+
+    <style name="ShapeableImage.Rounded">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar" parent="Theme.FilmsApplication">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+    </style>
 </resources>

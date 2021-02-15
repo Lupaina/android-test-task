@@ -9,7 +9,7 @@ import com.example.filmsapplication.ui.home.FavouritesFilmsFragment
 class FilmFragmentsAdapter(fragmentActivity: FragmentActivity) :
     FragmentStateAdapter(fragmentActivity) {
 
-    override fun getItemCount() = PAGES_COUNT
+    override fun getItemCount() = PAGE_COUNT
 
     override fun createFragment(position: Int): Fragment {
         return if (position == 1) {
@@ -20,6 +20,6 @@ class FilmFragmentsAdapter(fragmentActivity: FragmentActivity) :
     }
 
     companion object {
-        private const val PAGES_COUNT = 2
+        private const val PAGE_COUNT = 2
     }
 }

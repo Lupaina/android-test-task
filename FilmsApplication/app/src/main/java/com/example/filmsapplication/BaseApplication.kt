@@ -12,10 +12,8 @@ class BaseApplication : Application() {
         appComponent = component
     }
 
-
     open fun initializeComponent(): AppComponent {
         return DaggerAppComponent.factory().create(applicationContext)
-        // return null
     }
 
     companion object {

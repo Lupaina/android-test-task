@@ -1,4 +1,4 @@
-package com.example.filmsapplication.retrofit.interceptors
+package com.example.filmsapplication.data.retrofit.interceptors
 
 import com.example.filmsapplication.menagers.AuthorizationManager
 import com.example.filmsapplication.util.ApiConstants

@@ -5,25 +5,26 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.example.filmsapplication.R
 import com.example.filmsapplication.adapters.FilmAdapter
 import com.example.filmsapplication.databinding.FragmentAllFilmsBinding
-import com.example.filmsapplication.models.Resource
+import com.example.filmsapplication.models.LoadingState
+import com.example.filmsapplication.util.extansions.shareFilm
+import com.example.filmsapplication.util.listener.FilmItemClickListener
+import java.text.SimpleDateFormat
+import java.util.*
 
 
-/**
- * A simple [Fragment] subclass.
- * Use the [AllFilmsFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class AllFilmsFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
 
     private lateinit var uiBinding: FragmentAllFilmsBinding
-    private val viewModel: FilmsViewModel by activityViewModels()
     private lateinit var filmAdapter: FilmAdapter
+    private val viewModel: FilmsViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,43 +42,68 @@ class AllFilmsFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
 
     private fun initUI() {
         uiBinding.refreshLayout.setOnRefreshListener(this)
-        filmAdapter = FilmAdapter()
+        filmAdapter = FilmAdapter(object : FilmItemClickListener {
+            override fun like(position: Int) {
+                val item = filmAdapter.getItemIfExist(position)?.apply {
+                    mainListPosition = position
+                    isFavorite = !isFavorite
+                }
+                item?.let { viewModel.updateFavoriteList(it) }
+                filmAdapter.notifyItemChanged(position)
+            }
+
+            override fun share(position: Int) {
+                val itemId = filmAdapter.getItemIfExist(position)?.id
+                itemId?.let { shareFilm(it) }
+            }
+        })
         uiBinding.recyclerViewFilms.adapter = filmAdapter
     }
 
     private fun initObservers() {
-        viewModel.filmsList.observe(viewLifecycleOwner, { resource ->
-                filmAdapter.submitList(resource)
-        })
-
-        viewModel.loadingStateListener.observe(viewLifecycleOwner, { state ->
-            Log.v("LOADING STATE", state.toString())
-        })
+        viewModel.mainFilmsList.observe(viewLifecycleOwner, { filmAdapter.submitList(it) })
+        viewModel.loadingStateListener.observe(viewLifecycleOwner, { showLoadingState(it) })
+        viewModel.mainListItemUpdater.observe(viewLifecycleOwner,
+            { filmAdapter.notifyItemChanged(it) })
     }
 
-    private fun <T> showLoadingStare(result: Resource<T>) {
-        when (result) {
-            is Resource.Loading -> {
-                showLoading(true)
-                showLoadingError(false)
-            }
-            is Resource.Success -> {
+    private fun showLoadingState(loadingState: LoadingState) {
+        when (loadingState) {
+            is LoadingState.InitialLoading -> showInitialLoading(true)
+            is LoadingState.InitialLoadingFinis -> showInitialLoading(false)
+            is LoadingState.Loading -> showLoading(true)
+            is LoadingState.LoadingFinish -> showLoading(false)
+            is LoadingState.Refresh -> showInitialLoading(false)
+            is LoadingState.Error -> {
+                showInitialLoading(false)
                 showLoading(false)
-                showLoadingError(false)
+                showMessage(getString(R.string.error_network_error))
             }
-            is Resource.Error -> {
-                showLoading(false)
-                showLoadingError(true)
+            is LoadingState.CacheData -> {
+                showInitialLoading(false)
+                showMessage(getString(R.string.error_network_cache_data))
+            }
+            is LoadingState.NoData -> {
+                showInitialLoading(false)
+                showLoadingDataError(true)
             }
         }
     }
 
-    private fun showLoadingError(isShow: Boolean) {
+    private fun showLoadingDataError(isShow: Boolean) {
         uiBinding.textError.isVisible = isShow
     }
 
-    private fun showLoading(isShow: Boolean) {
+    private fun showInitialLoading(isShow: Boolean) {
         uiBinding.refreshLayout.isRefreshing = isShow
+    }
+
+    private fun showLoading(isShow: Boolean) {
+        uiBinding.loadingDataContainer.isVisible = isShow
+    }
+
+    private fun showMessage(message: String) {
+        Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
     }
 
     override fun onRefresh() {
@@ -85,8 +111,6 @@ class AllFilmsFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
     }
 
     companion object {
-        private const val TAG = "AllFilmsFragment"
-
         @JvmStatic
         fun newInstance() = AllFilmsFragment()
     }

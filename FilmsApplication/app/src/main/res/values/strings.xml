@@ -1,4 +1,8 @@
 <resources>
+    <string name="facebook_app_id">1003089360224164</string>
+    <string name="fb_login_protocol_scheme">fb1003089360224164</string>
+
+
     <string name="app_name">Films Application</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="films_title">FILMS</string>
@@ -6,7 +10,12 @@
     <string name="continue_without_login">Continue without login</string>
     <string name="continue_with_facebook">Continue with Facebook</string>
     <string name="like_button">Like</string>
+    <string name="remove_button">Remove</string>
     <string name="share_button">Share</string>
     <string name="error_network_error">Network Error. Request failed</string>
+    <string name="error_network_cache_data">Network error. Data not updated</string>
+    <string name="loading">Loading…</string>
+    <string name="no_favorite_movies">No favorite movies</string>
+    <string name="logout">Logout</string>
 
 </resources>
